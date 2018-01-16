@@ -14,10 +14,12 @@ app.use(fileUpload());
 router.use(function (req, res, next) {
     // do logging
     console.log('Magic is in the the Air.');
+//res.send("You should not be here");
     next(); // make sure we go to the next routes and don't stop here
 });
-router.route('/getAltText').post((req, res) => {
 
+router.route('/getAltText').get((req, res) => {
+res.send('Ok I am working');
 });
 
 router.route('/upload',(req,res)=>{
@@ -35,6 +37,8 @@ if (err)
     res.send('File uploaded!');
 
 });
+
+
 app.use('/api', router);
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'))
