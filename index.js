@@ -1,9 +1,12 @@
+const DbService = require('./db/db.service');
+
 const express = require('express');
 const app = express();
 const path = require("path");
 const bodyParser = require('body-parser');
 const router = express.Router();
 const fileUpload = require('express-fileupload');
+const db = new DbService();
 
 //Parsing the body of incoming requests to JSON
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -61,14 +64,30 @@ router.route('/upload', (req, res) => {
  *  }
  */
 router.route('/getImageDescription').get((req, res) => {
-if(req.query){
-    // Send error
-}
-    const domain= req.query.domain;
-    const region= req.query.region;
+    // if (req.query) {
+    //     // Send error
+    // }
+    const domain = req.query.domain;
+    const region = req.query.region;
 
-    //Check redis data base.
-    res.status(200).send({ id1: req.query.domain, id2: req.query.region });
+    //  Check redis data base.
+    let jsonData = {
+        version: "VERSION_NUMBER",
+        domain: "URL",
+        region: "REGION/LANG of URL",
+        image_descriptions: [{
+            imageHashId: ["PREDICTION 1",
+                "PREDICTION2", "PREDICTION3"]
+        }]
+    };
+    db.storeJSONObjects(jsonData)
+        .then(success => {
+            db.getObjectsByDomainFromDb("URL")
+                .then(alldata => res.status(200).send({ image_data: alldata }));
+        })
+        .catch(err => console.error('error in sotre obj', err));
+
+
 });
 
 
