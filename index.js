@@ -80,12 +80,16 @@ router.route('/getImageDescription').get((req, res) => {
                 "PREDICTION2", "PREDICTION3"]
         }]
     };
-    db.storeJSONObjects(jsonData)
-        .then(success => {
-            db.getObjectsByDomainFromDb("URL")
-                .then(alldata => res.status(200).send({ image_data: alldata }));
-        })
-        .catch(err => console.error('error in sotre obj', err));
+    // db.storeImageDataInDb(jsonData)
+    //     .then(success => {
+            // send to cache
+            db.findImageData(jsonData.domain)
+                .catch(err => console.error("Error in findImagedata", err))
+                .then(imageData => {
+                    res.status(200).send(imageData);
+                })
+        // })
+        // .catch(err => console.error('error in sotre obj', err));
 
 
 });

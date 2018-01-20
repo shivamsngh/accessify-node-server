@@ -1,4 +1,3 @@
-
 const redis = require('redis');
 const bluebird = require("bluebird");
 bluebird.promisifyAll(redis.RedisClient.prototype);
@@ -13,8 +12,9 @@ class CacheService {
         });
     }
 
-    storeSimpleKeyValueInCahe(key, value) {
-        return client.setAsync(['framework', 'AngularJS'])
+    storeImageDataInCache(key, value) {
+        value = JSON.stringify(value);
+        return client.SADDAsync(key, value)
             .then(success => { console.log("Saved key") })
             .catch(error => {
                 console.log("Error in saving key", error);
@@ -22,7 +22,7 @@ class CacheService {
             });
     }
 
-    storeJSONObjectsInCache(jsonObj) {
+    storeImageDataAsHashInCache(jsonObj) {
         // generate hash
         const domain = jsonObj.domain;
         console.log("domain", domain)
@@ -35,14 +35,17 @@ class CacheService {
             });
     }
 
-    getObjectsByDomainFrom(domain) {
+    findImageDataInCache(domain, region = 'us') {
         console.log("domain in get", domain);
-        return client.HGETALLAsync(domain)
+        return client.smembersAsync(domain)
             .then((allObjects) => {
                 console.log("All objects", allObjects);
                 return allObjects;
             })
-            .catch(error => console.error("error in getallobj", error));
+            .catch(error => {
+                console.error("Data not available in cache", error);
+                return Promise.resolve(null);
+            });
     }
 }
 module.exports = CacheService;

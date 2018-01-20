@@ -1,17 +1,17 @@
 {
   "name": "accessify-node-server",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "API for Accessify application",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodejs ./accessify-node-server/index.js"
+    "start": "redis-server --maxmemory 128mb --maxmemory-policy allkeys-lru && mongod -dbpath=./accessify-node-server/data/db && nodejs ./accessify-node-server/index.js"
   },
   "keywords": [
     "accessify"
   ],
   "author": "Shivam Singh",
-  "license": "MIT",
+  "license":"MIT",
   "dependencies": {
     "bluebird": "^3.5.1",
     "express": "^4.16.2",
