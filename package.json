@@ -11,12 +11,15 @@
     "accessify"
   ],
   "author": "Shivam Singh",
-  "license":"MIT",
+  "license": "MIT",
   "dependencies": {
     "bluebird": "^3.5.1",
+    "cheerio": "^1.0.0-rc.2",
     "express": "^4.16.2",
     "express-fileupload": "^0.3.0",
     "mongodb": "^3.0.1",
-    "redis": "^2.8.0"
+    "redis": "^2.8.0",
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2"
   }
 }

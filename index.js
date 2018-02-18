@@ -70,7 +70,11 @@ router.route('/getImageDescription').get((req, res) => {
     const domain = req.query.domain;
     const region = req.query.region;
 
-    //  Check redis data base.
+    //  Check redis db.
+    //  If not found send to scrapper module
+    
+
+    //TESTCODE
     let jsonData = {
         version: "VERSION_NUMBER",
         domain: "URL",
