@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "redis-server --maxmemory 128mb --maxmemory-policy allkeys-lru && mongod -dbpath=./accessify-node-server/data/db && nodejs ./accessify-node-server/index.js"
+    "start": "redis-server --maxmemory 128mb --maxmemory-policy allkeys-lru && mongod --config ./mongod.conf && nodejs ./accessify-node-server/index.js"
   },
   "keywords": [
     "accessify"
