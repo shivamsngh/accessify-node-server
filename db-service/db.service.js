@@ -29,11 +29,11 @@ class DbService {
                             // Save to cache
                             console.log("domain in store db", domain, "imgdata", imgData);
                             this.cache.storeImageDataInCache(domain, imgData);
-                            resolve(imgData);
+                            return resolve(imgData);
                         })
                         .catch(error => {
                             console.log(`Image data not found in Db, generating data for ${domain}${region}.`, error);
-                            reject(error);
+                            return reject(error);
                         });
                 });
         });
