@@ -3,7 +3,12 @@ const exec = require('child_process').exec;
 class DescriptionService {
     constructor() { }
 
-    getCaptions(imageName) {
+    /**
+     * Calls image description service
+     * as a child process on server
+     * @param {*} imageName 
+     */
+    generateImageCaptions(imageName) {
         return new Promise((resolve, reject) => {
             let image = imageName;
             let scpt = exec(`sh ./shellscripts/tensrscpt.sh ${image}`, (error, stdout, stderr) => {
@@ -17,8 +22,6 @@ class DescriptionService {
             });
         });
     }
-
 }
-
 
 module.exports = DescriptionService;

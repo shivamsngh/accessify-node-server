@@ -1,4 +1,5 @@
-const DbService = require('./db/db.service');
+const DbService = require('./db-service/db.service');
+const AnlaysisService = require('./analysis-service/analysis.service');
 
 const express = require('express');
 const app = express();
@@ -7,6 +8,7 @@ const bodyParser = require('body-parser');
 const router = express.Router();
 const fileUpload = require('express-fileupload');
 const db = new DbService();
+const analysis = new AnlaysisService();
 
 //Parsing the body of incoming requests to JSON
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -64,16 +66,11 @@ router.route('/upload', (req, res) => {
  *  }
  */
 router.route('/getImageDescription').get((req, res) => {
-    // if (req.query) {
-    //     // Send error
-    // }
     const domain = req.query.domain;
     const region = req.query.region;
 
     //  Check redis db.
     //  If not found send to scrapper module
-    
-
     //TESTCODE
     let jsonData = {
         version: "VERSION_NUMBER",
@@ -84,18 +81,28 @@ router.route('/getImageDescription').get((req, res) => {
                 "PREDICTION2", "PREDICTION3"]
         }]
     };
-    // db.storeImageDataInDb(jsonData)
-    //     .then(success => {
-            // send to cache
-            db.findImageData(jsonData.domain)
-                .catch(err => console.error("Error in findImagedata", err))
-                .then(imageData => {
-                    res.status(200).send(imageData);
-                })
-        // })
-        // .catch(err => console.error('error in sotre obj', err));
 
+    db.findImageData(jsonData.domain)
+        .catch(err => {
+            console.error("Error in findImagedata", err);
+            res.status(400).send(err);
+        })
+        .then(imageData => {
+            res.status(200).send(imageData);
+        });
+});
 
+// Route 2- Generate Image Data form image
+router.route('/generateImageData').get((req, res) => {
+    analysis.getGeneratedText('test-images/test1.jpg')
+        .then((description) => {
+            console.log("in route", description);
+            res.status(200).send(description);
+        })
+        .catch(err => {
+            console.log("Error in sending response", err);
+            res.status(400).send(err);
+        });
 });
 
 
@@ -103,4 +110,4 @@ router.route('/getImageDescription').get((req, res) => {
 app.use('/api', router);
 
 // Start local server
-app.listen(3000, () => console.log('Example app listening on port 3000!'))
+app.listen(3000, () => console.log('Accessify listening on port 3000!'))
