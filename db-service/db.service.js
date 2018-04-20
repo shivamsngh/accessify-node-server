@@ -1,11 +1,13 @@
 
 const CacheService = require('./cache.service');
 const MongoService = require('./mongo.service');
+const AnalysisService = require('../analysis-service/analysis.service')
 
 class DbService {
     constructor() {
         this.cache = new CacheService();
         this.db = new MongoService();
+        this.analysis = new AnalysisService();
     }
 
     /**
@@ -33,7 +35,10 @@ class DbService {
                         })
                         .catch(error => {
                             console.log(`Image data not found in Db, generating data for ${domain}${region}.`, error);
-                            return reject(error);
+                            this.analysis.generateImageCaptionsForSite(domain).then((successFile) => {
+                                resolve(successFile);
+                            })
+                                .catch(error => reject(error))
                         });
                 });
         });

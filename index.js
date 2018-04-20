@@ -81,8 +81,8 @@ router.route('/getImageDescription').get((req, res) => {
                 "PREDICTION2", "PREDICTION3"]
         }]
     };
-
-    db.findImageData(jsonData.domain)
+    console.log("host url in req", domain);
+    db.findImageData(domain)
         .catch(err => {
             console.error("Error in findImagedata", err);
             res.status(400).send(err);

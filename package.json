@@ -17,6 +17,8 @@
     "cheerio": "^1.0.0-rc.2",
     "express": "^4.16.2",
     "express-fileupload": "^0.3.0",
+    "fs-extra": "^5.0.0",
+    "image-downloader": "^3.3.0",
     "mongodb": "^3.0.1",
     "redis": "^2.8.0",
     "request": "^2.83.0",

@@ -1,13 +1,17 @@
 const ImageDescriptionService = require('./image-description.service');
 const OcrService = require('./ocr.service');
+const Scraper = require('../lib/scraper');
+const fse = require('fs-extra')
 
 class AnalysisService {
     constructor() {
         this.OCR = new OcrService();
         this.ImageDescription = new ImageDescriptionService();
+        this.scrape = new Scraper();
     }
 
     /**
+     * PRIVATE
      * Gets image description from tensorflow service
      * @param {*} image : Image path on server
      */
@@ -22,6 +26,7 @@ class AnalysisService {
     }
 
     /**
+     * TEST
      * Mock function for getImageCaption()
      */
     getMockCaption() {
@@ -29,6 +34,7 @@ class AnalysisService {
     }
 
     /**
+     * PRIVATE
      * Method for calling OCR function from service,
      * @param {*} image 
      */
@@ -47,11 +53,12 @@ class AnalysisService {
     }
 
     /**
+     * PUBLIC
      * Service level function for getting text in an image
      * @param {*} image : Path to image on server
      */
     getGeneratedText(image) {
-        return this.getMockCaption().then(captionText => {
+        return this.getImageCaption().then(captionText => {
             return this.getOcrText(image)
                 .then((OcrText) => {
                     let resp = `The image might contain ${captionText}`;
@@ -62,6 +69,29 @@ class AnalysisService {
                 .catch(err => console.log("Error in getOcrText", err));
         })
             .catch(err => console.log("Error in getMockCaption", err));
+    }
+
+    generateImageCaptionsForSite(siteName) {
+        return new Promise((resolve, reject) => {
+            this.scrape.loadSite(siteName).then(imageArray => {
+                console.log("imageArray object", imageArray);
+                this.asyncForEach(imageArray, siteName, resolve);
+            })
+                .catch(e => reject(e))
+        })
+
+    }
+
+    async  asyncForEach(array, sitename, callback) {
+        const newArr = [];
+        for (let index = 0; index < array.length; index++) {
+            const ImageDesc = await this.getGeneratedText(array[index].filename);
+            newArr.push({ ...array[index], ImageDesc });
+        }
+        console.log("new array with image dsc", newArr);
+        // Delete contents of image-data folder
+        fse.remove(`image-data/${sitename}`);
+        callback(newArr);
     }
 }
 
