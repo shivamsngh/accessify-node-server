@@ -39,17 +39,21 @@ class AnalysisService {
      * @param {*} image 
      */
     getOcrText(image) {
-        return this.OCR.getTextInImage(image)
-            .then((text) => {
-                if (text.length) {
-                    return text;
-                }
-                else return null
-            })
-            .catch(err => {
-                console.log("Error in OCR", err);
-                return null;
-            })
+        // return this.OCR.getTextInImage(image)
+        //     .then((text) => {
+        //         if (text.length) {
+        //             return text;
+        //         }
+        //         else return null
+        //     })
+        //     .catch(err => {
+        //         console.log("Error in OCR", err);
+        //         return null;
+        //     })
+
+        // Dropped OCr service in favour of speed in first iteration
+
+        return Promise.resolve('');
     }
 
     /**
