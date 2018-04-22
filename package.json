@@ -19,6 +19,7 @@
     "express-fileupload": "^0.3.0",
     "fs-extra": "^5.0.0",
     "image-downloader": "^3.3.0",
+    "jimp": "^0.2.28",
     "mongodb": "^3.0.1",
     "redis": "^2.8.0",
     "request": "^2.83.0",

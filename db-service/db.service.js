@@ -36,7 +36,10 @@ class DbService {
                         .catch(error => {
                             console.log(`Image data not found in Db, generating data for ${domain}${region}.`, error);
                             this.analysis.generateImageCaptionsForSite(domain).then((successFile) => {
-                                resolve(successFile);
+                                console.log("success file in db ", successFile);
+                                const mainVersioningFile = { version: 1, domain: domain, imageData: successFile };
+                                this.db.createImageDataInDb(mainVersioningFile).then(success => this.cache.storeImageDataAsHashInCache(mainVersioningFile));
+                                resolve(mainVersioningFile);
                             })
                                 .catch(error => reject(error))
                         });

@@ -16,7 +16,7 @@ class MongoService {
             this.db.collection(imageDataObj.domain).save({
                 version: imageDataObj.version,
                 domain: imageDataObj.domain,
-                image_data: imageDataObj.image_descriptions
+                image_data: imageDataObj.imageData
             }, (err, success) => {
                 if (err) reject(err);
                 resolve(success);

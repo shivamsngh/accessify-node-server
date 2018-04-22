@@ -5,12 +5,18 @@ class OcrService {
     getTextInImage(image) {
         return new Promise((resolve, reject) => {
             Tesseract.recognize(image)
-                .progress(message => console.log(message))
+                // .progress(message => console.log(message))
                 .catch(err => {
                     console.log("Error in tesseract", err);
-                    reject(err);
+                    resolve('');
                 })
-                .then(result => resolve(result.text))
+                .then(result => {
+                    let finalText = result.text;
+                    if (result.text.length > 20) {
+                        finalText = '';
+                    }
+                    resolve(finalText);
+                })
                 .finally(resultOrError => console.log(resultOrError))
         });
     }
