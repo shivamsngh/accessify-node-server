@@ -11,7 +11,7 @@ class DescriptionService {
     generateImageCaptions(imageName) {
         return new Promise((resolve, reject) => {
             let image = imageName;
-            let scpt = exec(`sh ./shellscripts/tensrscpt.sh ${image}`, (error, stdout, stderr) => {
+            let scpt = exec(`sh ../shellscripts/tensrscpt.sh ${image}`, (error, stdout, stderr) => {
                 console.log(stdout);
                 console.log(stderr);
                 resolve(stdout);
