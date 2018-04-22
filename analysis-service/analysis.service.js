@@ -58,7 +58,7 @@ class AnalysisService {
      * @param {*} image : Path to image on server
      */
     getGeneratedText(image) {
-        return this.getMockCaption().then(captionText => {
+        return this.getImageCaption(image).then(captionText => {
             return this.getOcrText(image)
                 .then((OcrText) => {
                     let resp = `The image might contain ${captionText}`;
