@@ -24,7 +24,10 @@ class DescriptionService {
     }
 
     extractHighlyProbableOutput(stringInput) {
-        return stringInput.match(/0\).*\(p/)[0].replace('0)', '');
+        if (stringInput) {
+            return stringInput.match(/0\).*\(p/)[0].replace('0)','');
+        }
+        else return '';
     }
 }
 
