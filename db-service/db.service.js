@@ -38,7 +38,7 @@ class DbService {
                             this.analysis.generateImageCaptionsForSite(domain, imageArrayFromBrowser).then((successFile) => {
                                 console.log("success file in db ", successFile);
                                 const mainVersioningFile = { version: 1, domain: domain, image_data: successFile };
-                                this.db.createImageDataInDb(mainVersioningFile).then(success => this.cache.storeImageDataAsHashInCache(mainVersioningFile));
+                                this.db.createImageDataInDb(mainVersioningFile).then(success => this.cache.storeImageDataInCache(domain, mainVersioningFile));
                                 resolve(mainVersioningFile);
                             })
                                 .catch(error => reject(error))
