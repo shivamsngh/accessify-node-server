@@ -62,7 +62,7 @@ class AnalysisService {
      * @param {*} image : Path to image on server
      */
     getGeneratedText(image) {
-        return this.getMockCaption(image).then(captionText => {
+        return this.getImageCaption(image).then(captionText => {
             return this.getOcrText(image)
                 .then((OcrText) => {
                     if (captionText) {
