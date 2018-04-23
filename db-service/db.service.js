@@ -18,11 +18,11 @@ class DbService {
     findImageData(domain, region = 'us', imageArrayFromBrowser) {
         return new Promise((resolve, reject) => {
             this.cache.findImageDataInCache(domain, region)
-                .then(imageData => {
+                .then(image_data => {
                     console.log("type of imagedata from redis", typeof imageData);
-                    if (imageData === null || imageData === undefined || imageData.length === 0)
+                    if (image_data === null || image_data === undefined || image_data.length === 0)
                         throw null;
-                    resolve(imageData);
+                    resolve(image_data);
                 })
                 .catch(error => {
                     console.log("Image Data Not found in cache", error);
@@ -37,7 +37,7 @@ class DbService {
                             console.log(`Image data not found in Db, generating data for ${domain}${region}.`, error);
                             this.analysis.generateImageCaptionsForSite(domain, imageArrayFromBrowser).then((successFile) => {
                                 console.log("success file in db ", successFile);
-                                const mainVersioningFile = { version: 1, domain: domain, imageData: successFile };
+                                const mainVersioningFile = { version: 1, domain: domain, image_data: successFile };
                                 this.db.createImageDataInDb(mainVersioningFile).then(success => this.cache.storeImageDataAsHashInCache(mainVersioningFile));
                                 resolve(mainVersioningFile);
                             })

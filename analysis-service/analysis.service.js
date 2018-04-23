@@ -62,7 +62,7 @@ class AnalysisService {
      * @param {*} image : Path to image on server
      */
     getGeneratedText(image) {
-        return this.getImageCaption(image).then(captionText => {
+        return this.getMockCaption(image).then(captionText => {
             return this.getOcrText(image)
                 .then((OcrText) => {
                     if (captionText) {
@@ -92,7 +92,7 @@ class AnalysisService {
             this.scrape.loadSiteFromBrowserArray(siteName, imageArrayFromBrowser).then(imageArray => {
                 console.log("imageArray object", imageArray);
                 console.log("imageArrayFromBrowser object", imageArrayFromBrowser);
-                this.asyncForEach(imageArrayFromBrowser, siteName, resolve);
+                this.asyncForEach(imageArray, siteName, resolve);
             })
                 .catch(e => reject(e))
         })
