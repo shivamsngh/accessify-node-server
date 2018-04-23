@@ -67,7 +67,7 @@ class AnalysisService {
                 .then((OcrText) => {
                     if (captionText) {
                         let resp = `The image might contain ${captionText}`;
-                        resp = OcrText !== null ? `${resp} and has some text as \n ${OcrText}` : resp;
+                        resp = OcrText !== null ? `${resp} \n ${OcrText}` : resp;
                         // console.log("In getGeneratedText",OcrText);
                         return resp;
                     }
