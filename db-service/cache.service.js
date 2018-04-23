@@ -22,19 +22,6 @@ class CacheService {
             });
     }
 
-    storeImageDataAsHashInCache(jsonObj) {
-        // generate hash
-        const domain = jsonObj.domain;
-        console.log("domain", domain)
-        jsonObj = JSON.stringify(jsonObj);
-        return client.hmsetAsync(domain, jsonObj)
-            .then(success => console.log("Success in hmset"))
-            .catch(error => {
-                console.error("Error in hmset", error);
-                Promise.reject(error);
-            });
-    }
-
     findImageDataInCache(domain, region = 'us') {
         console.log("domain in get", domain);
         return client.smembersAsync(domain)

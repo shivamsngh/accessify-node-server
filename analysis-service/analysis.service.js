@@ -1,7 +1,8 @@
 const ImageDescriptionService = require('./image-description.service');
 const OcrService = require('./ocr.service');
 const Scraper = require('../lib/scraper');
-const fse = require('fs-extra')
+const fse = require('fs-extra');
+const lib = require('../lib/regex');
 
 class AnalysisService {
     constructor() {
@@ -107,7 +108,7 @@ class AnalysisService {
         }
         console.log("new array with image dsc", newArr);
         // Delete contents of image-data folder
-        fse.remove(`image-data/${sitename}`);
+        fse.remove(`image-data/${lib.getHostName(sitename)}`);
         callback(newArr);
     }
 }
