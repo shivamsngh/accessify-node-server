@@ -62,24 +62,37 @@ class AnalysisService {
      * @param {*} image : Path to image on server
      */
     getGeneratedText(image) {
-        return this.getImageCaption(image).then(captionText => {
+        return this.getMockCaption(image).then(captionText => {
             return this.getOcrText(image)
                 .then((OcrText) => {
-                    let resp = `The image might contain ${captionText}`;
-                    resp = OcrText !== null ? `${resp} and has some text as \n ${OcrText}` : resp;
-                    // console.log("In getGeneratedText",OcrText);
-                    return resp;
+                    if (captionText) {
+                        let resp = `The image might contain ${captionText}`;
+                        resp = OcrText !== null ? `${resp} and has some text as \n ${OcrText}` : resp;
+                        // console.log("In getGeneratedText",OcrText);
+                        return resp;
+                    }
+                    else {
+                        return '';
+                    }
+
                 })
-                .catch(err => console.log("Error in getOcrText", err));
+                .catch(err => {
+                    console.log("Error in getOcrText", err);
+                    return '';
+                });
         })
-            .catch(err => console.log("Error in getMockCaption", err));
+            .catch(err => {
+                console.log("Error in getMockCaption", err);
+                return '';
+            });
     }
 
-    generateImageCaptionsForSite(siteName) {
+    generateImageCaptionsForSite(siteName, imageArrayFromBrowser) {
         return new Promise((resolve, reject) => {
-            this.scrape.loadSite(siteName).then(imageArray => {
+            this.scrape.loadSiteFromBrowserArray(siteName, imageArrayFromBrowser).then(imageArray => {
                 console.log("imageArray object", imageArray);
-                this.asyncForEach(imageArray, siteName, resolve);
+                console.log("imageArrayFromBrowser object", imageArrayFromBrowser);
+                this.asyncForEach(imageArrayFromBrowser, siteName, resolve);
             })
                 .catch(e => reject(e))
         })

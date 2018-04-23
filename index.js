@@ -68,6 +68,7 @@ router.route('/upload', (req, res) => {
 router.route('/getImageDescription').get((req, res) => {
     const domain = req.query.domain;
     const region = req.query.region;
+    const imageArrayFromBrowser = JSON.parse(req.query.imageArrayFromBrowser);
 
     //  Check redis db.
     //  If not found send to scrapper module
@@ -82,7 +83,8 @@ router.route('/getImageDescription').get((req, res) => {
         }]
     };
     console.log("host url in req", domain);
-    db.findImageData(domain)
+    console.log("image array browser url in req", imageArrayFromBrowser);
+    db.findImageData(domain, region, imageArrayFromBrowser)
         .catch(err => {
             console.error("Error in findImagedata", err);
             res.status(400).send(err);
