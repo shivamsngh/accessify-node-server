@@ -56,32 +56,29 @@ router.route('/upload', (req, res) => {
 /**
  * Plugin API function for fetching Image description
  * RESPONSE- JSON file(String format) for a particulate domain
- * FILE Structure-
- * {
- *  "version":"VERSION_NUMBER",
- *  "domain":"URL",
- *  "region":"REGION/LANG of URL",
- *  "image_descriptions":[{"imageHashId":["PREDICTION 1",
- *  "PREDICTION2", "PREDICTION3"]}]
- *  }
  */
 router.route('/getImageDescription').get((req, res) => {
     const domain = req.query.domain;
     const region = req.query.region;
     const imageArrayFromBrowser = JSON.parse(req.query.imageArrayFromBrowser);
 
-    //  Check redis db.
-    //  If not found send to scrapper module
-    //TESTCODE
-    let jsonData = {
-        version: "VERSION_NUMBER",
-        domain: "URL",
-        region: "REGION/LANG of URL",
-        image_descriptions: [{
-            imageHashId: ["PREDICTION 1",
-                "PREDICTION2", "PREDICTION3"]
-        }]
-    };
+    console.log("host url in req", domain);
+    console.log("image array browser url in req", imageArrayFromBrowser);
+    db.findImageData(domain, region, imageArrayFromBrowser)
+        .catch(err => {
+            console.error("Error in findImagedata", err);
+            res.status(400).send(err);
+        })
+        .then(imageData => {
+            res.status(200).send(imageData);
+        });
+});
+
+router.route('/getImageDescription').post((req, res) => {
+    const domain = req.body.domain;
+    const region = req.body.region;
+    const imageArrayFromBrowser = JSON.parse(req.body.imageArrayFromBrowser);
+
     console.log("host url in req", domain);
     console.log("image array browser url in req", imageArrayFromBrowser);
     db.findImageData(domain, region, imageArrayFromBrowser)
